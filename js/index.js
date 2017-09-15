@@ -124,12 +124,35 @@ $('.wp-inner').fullpage({
 
 
 Zepto(function ($) {
-    //音乐播放
-    /*var audio = document.querySelector('#bgmusic');
-     audio.play();*/
+    //判断是否是微信浏览器打开 是——隐藏头
+    var ua = navigator.userAgent.toLowerCase();
+    if (ua.match(/MicroMessenger/i) == "micromessenger") {
+        $(".header").hide();
+        $('.banner').css('padding-top', 0)
+    }
+    $('.right').hide();
 
-    var islogin,isjoinActivity
-    //alert("document.body.clientHeight"+$('.wp')[0].clientHeight+"document.body.clientWidth"+document.body.clientWidth)
+    if (api.IsIOSClient() || api.IsAndroidClient()) {
+        $(".header .left").show();
+        $(".header .right").show();
+        $("#tab1").hide();
+    }
+    else {
+        $(".header .right").hide();
+        $("#tab1").show();
+    }
+    $(".left").click(function () {
+        if (api.IsIOSClient() || api.IsAndroidClient()) {
+            api.pageBack();
+        }
+        else {
+            window.location.href = "http://m.aoyou.com";
+        }
+    });
+    $(".header .right").click(function () {
+        api.openShareDialog("【送千元旅游券】十一8天8道菜，遨游餐厅上菜啦！ ", "年轻人的菜 VS 年轻人的家庭旅行", "http://mact.aoyou.com/hd/8dish/index.html", "");
+    });
+
 
     //微信分享
     if(window.location.href.indexOf("from") > 0){
